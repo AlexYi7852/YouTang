@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.form-wrapper{ 
+.form-wrapper{
     margin-top: 80px;
     .account{
         margin-top: 20px;

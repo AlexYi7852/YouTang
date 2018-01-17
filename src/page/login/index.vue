@@ -38,6 +38,7 @@ import ytHeader from '../../components/header/yt-header'
 import ytFooter from '../../components/footer/yt-footer'
 import ytLogin from './yt-login'
 import ytRegister from './yt-register'
+import Hub from '../../components/hub'
 
 export default {
   components: {
