@@ -1,9 +1,21 @@
 <template>
     <div class="main">
-      	<router-view></router-view>
+      <Enter></Enter>
+      <router-view></router-view>
     </div>
 </template>
 
+<script>
+  import Enter from './components/enter/index'
+  export default {
+    components: { Enter }
+  }
+</script>
+
 <style lang="less">
-.main{ width: 100%; height: 100%;}
+.main{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 </style>

@@ -229,16 +229,6 @@
         return this.options.length
       }
     },
-    watch: {
-      'teacherList' () {
-        this.$nextTick(() => {
-          this.enter()
-          this.leave()
-          this.enterNav()
-          this.leaveNav()
-        })
-      }
-    },
     methods: {
       enterNav () {
         this.navShow = true
