@@ -73,7 +73,6 @@
         if (this.$route.path.indexOf('reservation') !== -1) {
           this.reservationBackground = true
         }
-        console.log(this.reservationBackground)
       },
       selectFocus(num) {
         if (num === 1) {
@@ -92,13 +91,14 @@
         }
         // ajax
         let url = `/api/v1/user/lessonbalance?${ common.sort(user_id) }`;
-        axios.get(url)
-          .then(function (response) {
+        axios.get(url).then(function (response) {
             if (response.data.errCode == 0) {
               that.lessonOnebyfour = response.data.data.onebyfour;
               that.lessonOnebyone = response.data.data.onebyone;
             } else {
-              console.log('没有数据');
+              this.$alert('没有数据', {
+              confirmButtonText: "确定"
+            });
             }
           })
       }

@@ -5,7 +5,7 @@
         <div class="main-content flex">
             <div class="cart-main">
                 <div class="course-menu">
-                    <el-menu :default-active="activeIndex" class="el-menu-demo flex" mode="horizontal" @select="handleSelect">
+                    <el-menu :default-active="activeIndex" class="el-menu-demo flex" mode="horizontal">
                         <router-link to="/cart/four">
                             <el-menu-item index="1">
                                 <span>一对四课程包</span>
@@ -69,10 +69,7 @@ export default {
             }else{
                 this.activeIndex = '1'
             }
-        },
-        handleSelect(key, keyPath) {
-			// console.log(key, keyPath);
-		}
+        }
 	}
 }
 </script>

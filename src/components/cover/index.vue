@@ -90,7 +90,6 @@ export default {
           }
         };
         axios.post(url, data, config).then(response => {
-          console.log(this.timeStamp);
           if (response.data.errCode === 0) {
             this.$alert(response.data.errMsg, {
               confirmButtonText: "确定"

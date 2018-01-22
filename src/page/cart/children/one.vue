@@ -102,7 +102,8 @@ export default {
 					that.user_ip = response.data.data.ip;
 			 		that.cartDetails();
 				}else{
-					console.log('IP地址错误');
+                    console.log('IP地址错误');
+                    没有数据
 				}
 			})
         },
@@ -174,7 +175,6 @@ export default {
 				}
             }
             axios.post(url,info,config).then((response) => {
-                console.log(response);
                 if (response.data.errCode == 0) {
                     this.orderInfo = response.data.data;
                     this.wxpay_payment();

@@ -106,7 +106,6 @@ export default {
 			let url = `/api/v1/webuser_ecaluation?${common.sort(info)}`;
 			axios.get(url,info)
 			.then(function (response) {
-                console.log(response);
 				if (response.data.errCode == 0) {
                     if (response.data.data == '') {
                         that.$alert('您还没有完成测评，请先预约课程或者完成测评课', '系统提示', {

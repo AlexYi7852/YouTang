@@ -104,7 +104,7 @@ export default {
                 let url = `/api/v1/common/sendsms?${common.sort(sendsms)}`;
                 axios.get(url)
                 .then(function (response) {
-                    console.log(response.data.errMsg);
+                    
                 })
                 .catch(function (error) {
                     let alert = {
@@ -151,7 +151,6 @@ export default {
                         }
                         axios.post(url,formData,config)
                         .then(function (response) {
-                            console.log(response);
                             if (response.data.errCode == 0) {
                                 that.$alert('修改密码成功', response.data.errMsg, {
                                     confirmButtonText: '确定',
