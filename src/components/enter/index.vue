@@ -1,11 +1,12 @@
 <template>
-  <a :href="{ path:'/study/mycourse/undone', query: { timestamp: timeStamp }}">
+  <router-link :to="{ path:'/study/mycourse/undone', query: { timestamp: timeStamp }}">
     <div class="enter" v-show="isShow" :class="{ 'enter-classroom': enterClassroom }"></div>
-  </a>
+  </router-link>
 </template>
 
 <script>
   import axios from 'axios'
+  import common from '../common'
 
   export default {
     data() {
@@ -24,13 +25,22 @@
     },
     methods: {
       getOutLesson() {
+        if (this.$route.path === '/study/mycourse/undone') {
+          this.isShow = false
+          return
+        }
         let data = {
           'user_id': window.localStorage.id,
           'role_id': window.localStorage.child,
           'time': this.time
         }
         let url = '/api/v1/course/soon_course'
-        axios.post(url, data).then((response) => {
+        let config = {
+          headers: {
+            tokens: common.sortMd5(data)
+          }
+        }
+        axios.post(url, data, config).then((response) => {
           if (response.data.errCode === 0) {
             this.isShow = true
             this.timeStamp = response.data.data.datetimes
@@ -42,7 +52,6 @@
             this.isShow = false
           }
         })
-        console.log(this.enterClassroom)
       }
     }
   }

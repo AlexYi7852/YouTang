@@ -7,7 +7,6 @@
                     <div class="info-title">
                         <p>{{typeDistinguish(item.type)}}</p>
                         <h2>{{item.title}}</h2>
-                        <!-- <span>{{item.describe}}</span> -->
                     </div>
                     <div class="info-time">
                         <p>上课时间：{{moment.unix(item.datetimes).format('MM月DD日 HH:mm')}}</p>
@@ -40,8 +39,8 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../common'
 
 export default {
     props: [ 'childMsg' ],
@@ -122,23 +121,13 @@ export default {
 				'type': '2',
 				'user_id': ls,
 				'lesson_type': type
-			},
-			keys = Object.keys(talk_cloud),
-			i, len = keys.length;
-			keys.sort();
-			let p = '';
-			for (i = 0; i < len; i++) {
-				let k = keys[i];
-				p += k+'='+talk_cloud[k]+'&';
 			}
-			p = p.substring(0,p.length-1);
-			let tokens = md5('ilovewan' + p + 'banghanchen');
 			// ajax
 			let url = '/api/v1/talk_cloud/url';
 			let config = {
 				headers:{
 					versions: '1',
-					tokens: tokens
+					tokens: common.sortMd5(talk_cloud)
 				}
 			}
 			axios.post(url,talk_cloud,config)

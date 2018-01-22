@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../../components/common'
 
 export default {
     data(){
@@ -99,19 +99,9 @@ export default {
                     'areacode': this.restCountry,
                     'telephone': this.restTel,
                     'type': '2'
-                },
-                keys = Object.keys(sendsms),
-                i, len = keys.length;
-                keys.sort();
-                let p = '';
-                for (i = 0; i < len; i++) {
-                    let k = keys[i];
-                    p += k+'='+sendsms[k]+'&';
                 }
-                p = p.substring(0,p.length-1);
-                let tokens = md5('ilovewan' + p + 'banghanchen');
                 // ajax
-                let url = `/api/v1/common/sendsms?${p}`;
+                let url = `/api/v1/common/sendsms?${common.sort(sendsms)}`;
                 axios.get(url)
                 .then(function (response) {
                     console.log(response.data.errMsg);
@@ -143,17 +133,7 @@ export default {
                             'post_type': 'find_password',
                             'smscode': this.restSms,
                             'areacode': this.restCountry
-                        },
-                        keys = Object.keys(login),
-                        i, len = keys.length;
-                        keys.sort();
-                        let p = '';
-                        for (i = 0; i < len; i++) {
-                            let k = keys[i];
-                            p += k+'='+login[k]+'&';
                         }
-                        p = p.substring(0,p.length-1);
-                        let tokens = md5('ilovewan' + p + 'banghanchen');
                         // ajax
                         let url = '/api/v1/phone/web_found';
                         let formData = new FormData();
@@ -165,7 +145,7 @@ export default {
                         let config = {
                             headers:{
                                 versions: '1',
-                                tokens: tokens,
+                                tokens: common.sortMd5(login),
                                 'content-type': 'multipart/form-data'
                             }
                         }

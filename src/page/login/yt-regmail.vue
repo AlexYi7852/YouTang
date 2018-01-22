@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-mail tab-list">
+  <div class="tab-mail tab-list" @keyup.enter="reg">
     <div class="form-wrapper">
         <div class="account flex">
             <p class="input-title">邮箱账号:</p>
@@ -21,8 +21,9 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import Hub from '../../components/hub'
+import common from '../../components/common'
 
 export default {
   data:function () {
@@ -46,17 +47,7 @@ export default {
                 'email': this.regMail,
                 'password': this.regPwd,
                 'post_type': 'register',
-            },
-            keys = Object.keys(register),
-            i, len = keys.length;
-            keys.sort();
-            let p = '';
-            for (i = 0; i < len; i++) {
-                let k = keys[i];
-                p += k+'='+register[k]+'&';
             }
-            p = p.substring(0,p.length-1);
-            let tokens = md5('ilovewan' + p + 'banghanchen');
             // ajax
             let url = '/api/v1/users/web_register';
             let formData = new FormData();
@@ -67,7 +58,7 @@ export default {
                 headers:{
                     versions: '1',
                     as: '3',
-                    tokens: tokens,
+                    tokens: common.sortMd5(register),
                     'content-type': 'multipart/form-data'
                 }
             }
@@ -75,8 +66,11 @@ export default {
             .then(function (response) {
                 if (response.data.errCode == '0') {
                     that.$alert('该邮箱已注册成功', '注册成功', {
-						confirmButtonText: '确定',
-					})
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            Hub.$emit('loginLink',true);
+                        }
+                    })
                 }else if(response.data.errCode == '30002'){
                     that.$alert('邮箱或密码格式错误，请输入正确的邮箱或6-16位密码', '注册失败', {
 						confirmButtonText: '确定',
@@ -103,7 +97,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.form-wrapper{
+.form-wrapper{ 
     margin-top: 80px;
     .account{
         margin-top: 20px;

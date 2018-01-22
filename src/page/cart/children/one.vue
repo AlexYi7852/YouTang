@@ -59,7 +59,7 @@
 
 <script>
 import axios from 'axios'
-import md5 from 'blueimp-md5'
+import common from '../../../components/common'
 
 export default {
     data(){
@@ -164,23 +164,13 @@ export default {
                 shopid: this.dialogShopid,
                 amount_y: this.dialogDiscount_price,
                 merchantAccountId: this.dialogCurrency_code
-            },            
-            keys = Object.keys(info),
-            i, len = keys.length;
-            keys.sort();
-            let p = '';
-            for (i = 0; i < len; i++) {
-                let k = keys[i];
-                p += k+'='+info[k]+'&';
             }
-            p = p.substring(0,p.length-1);
-            let tokens = md5(`ilovewan${p}banghanchen`);
             // ajax
             let url = '/api/v1/web_wxpay_orderid';
             let config = {
 				headers:{
 					versions: '1',
-					tokens: tokens,
+					tokens: common.sortMd5(info),
 				}
             }
             axios.post(url,info,config).then((response) => {
@@ -198,18 +188,9 @@ export default {
             let info = {
                 id: this.orderInfo.id,
                 user_id: window.localStorage.getItem('token_id')
-            },            
-            keys = Object.keys(info),
-            i, len = keys.length;
-            keys.sort();
-            let p = '';
-            for (i = 0; i < len; i++) {
-                let k = keys[i];
-                p += k+'='+info[k]+'&';
             }
-            p = p.substring(0,p.length-1);
             // ajax
-            let url = `/api/v1/web_wxpay_payment?${p}`;
+            let url = `/api/v1/web_wxpay_payment?${common.sort(info)}`;
             axios.get(url,info).then((response) => {
                 if (response.data.errCode == 0) {
                     this.wxpayInfo = response.data.data;
@@ -235,7 +216,7 @@ export default {
                         this.$alert(`您已成功购买${this.dialogTitle_cn}`, '购买成功', {
                             confirmButtonText: '确定',
                             callback: action => {
-                                this.$router.push('/study');
+                                this.$router.push('/cart');
                             }
                         })
                     }else if(response.data.data.trade_state == "NOTPAY"){

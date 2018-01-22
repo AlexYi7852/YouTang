@@ -29,8 +29,8 @@ import MyCourse from '../page/study/mycourse'
 import Complete from '../page/study/children/complete'
 import Undone from '../page/study/children/undone'
 import MyScore from '../page/study/myscore'
-import NewComplete from '../page/study/children/newComplete'
-import NewUndone from '../page/study/children/newUndone'
+import ReadComplete from '../page/study/children/readComplete'
+import ReadUndone from '../page/study/children/readUndone'
 
 // 预约
 import Reservation from '../page/reservation/index'
@@ -128,19 +128,19 @@ export default new Router({
             component: Undone
           },
           {
-            path: 'newComplete',
-            component: NewComplete
+            path: 'readComplete',
+            component: ReadComplete
           },
           {
-            path: 'newUndone',
-            component: NewUndone
+            path: 'readUndone',
+            component: ReadUndone
           }
         ]
       },
-        {
-          path: 'myscore',
-          component: MyScore
-        }
+      {
+        path: 'myscore',
+        component: MyScore
+      }
       ]
     },
     {

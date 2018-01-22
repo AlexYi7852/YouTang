@@ -9,10 +9,10 @@
       </div>
     </div>
     <div class="date">
-      <div class="week" v-for="week in nowMonthWeeks">{{ week }}</div><br>
+      <div class="week" v-for="(week, index) in nowMonthWeeks" :key="index">{{ week }}</div><br>
       <div :class="{ 'today': day === new Date().getDate() && nowMonth === new Date().getMonth() + 1
       && nowYear === new Date().getFullYear(), 'active': isActive === index && nowMonth ===  new Date().getMonth() + 1 }"
-      class="day" v-for="(day, index) in dayNum" @click="getAppointTime(day, index)">{{ day }}</div>
+      class="day" v-for="(day, index) in dayNum" :key="day.index" @click="getAppointTime(day, index)">{{ day }}</div>
     </div>
   </div>
 </template>
@@ -20,7 +20,6 @@
 <script>
   import axios from 'axios'
   import jstz from 'jstz'
-  import md5 from 'blueimp-md5'
   import Hub from '../../../components/hub'
 
   export default {

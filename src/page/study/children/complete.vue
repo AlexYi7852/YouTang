@@ -30,9 +30,11 @@
                 <el-option v-for="date in dates" :key="date" :label="date" :value="date"></el-option>
             </el-select>
         </div>
-        <!-- <div class="switch-mode clearfix">
-           <el-button @click="switchMode()">切换阅读模式</el-button>
-        </div> -->
+        <div class="switch-mode clearfix">
+           <router-link to="/study/mycourse/readComplete">
+                <el-button>切换阅读模式</el-button>
+            </router-link>
+        </div>
     </div>
 </div>
 </template>
@@ -40,6 +42,7 @@
 <script>
 import axios from 'axios'
 import courseBox from '../../../components/common/course-info'
+import common from '../../../components/common';
 
 export default {
     components: { courseBox },
@@ -84,19 +87,13 @@ export default {
             let data = {
                 user_id: window.localStorage.getItem('child'),
                 mouth: this.moment(d).unix()
-            },
-            keys = Object.keys(data),
-            i, len = keys.length;
-            keys.sort();
-            let p = '';
-            for (i = 0; i < len; i++) {
-                let k = keys[i];
-                p += k+'='+data[k]+'&';
             }
-            p = p.substring(0,p.length-1);
+            let config = { headers: {
+                tokens: common.sortMd5(data)
+            } }
             // ajax
             let url = '/api/v1/course/webyeslesson';
-            axios.post(url, data).then((response) => {
+            axios.post(url, data, config).then((response) => {
                 this.titleMonth = month + 1;
                 if (response.data.errCode == 0) {
                     this.items = response.data.data;
@@ -124,10 +121,6 @@ export default {
         // 点击消失
         showHide(){
             this.dataIndex = null;
-        },
-        // 切换模式
-        switchMode(){
-
         }
     }
 }

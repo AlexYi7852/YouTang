@@ -51,8 +51,8 @@
 </template>
 
 <script>
-  import md5 from 'blueimp-md5'
   import axios from 'axios'
+  import common from '../common'
 
   export default {
     data() {
@@ -89,26 +89,10 @@
         // md5验证
         let user_id = {
             'user_id': window.localStorage.getItem('id')
-          },
-          keys = Object.keys(user_id),
-          i, len = keys.length;
-        keys.sort();
-        let p = '';
-        for (i = 0; i < len; i++) {
-          let k = keys[i];
-          p += k + '=' + user_id[k] + '&';
         }
-        p = p.substring(0, p.length - 1);
-        let tokens = md5(`ilovewan${p}banghanchen`);
         // ajax
-        let url = `/api/v1/user/lessonbalance?${p}`;
-        let config = {
-          headers: {
-            versions: '1',
-            tokens: tokens,
-          }
-        }
-        axios.get(url, user_id, config)
+        let url = `/api/v1/user/lessonbalance?${ common.sort(user_id) }`;
+        axios.get(url)
           .then(function (response) {
             if (response.data.errCode == 0) {
               that.lessonOnebyfour = response.data.data.onebyfour;

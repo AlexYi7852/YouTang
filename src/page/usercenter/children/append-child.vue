@@ -64,9 +64,9 @@
 </template>
 
 <script>
-  import md5 from 'blueimp-md5'
   import axios from 'axios'
   import VueImgInputer from 'vue-img-inputer'
+  import common from '../../../components/common'
 
   export default {
     components: {
@@ -92,17 +92,7 @@
           'sex': this.child.sex,
           'ages': this.child.ages,
           'headurl': this.picValue
-        },
-          keys = Object.keys(data),
-          i, len = keys.length;
-        keys.sort();
-        let p = '';
-        for (i = 0; i < len; i++) {
-          let k = keys[i];
-          p += k+'='+data[k]+'&';
         }
-        p = p.substring(0,p.length-1);
-        let tokens = md5(`ilovewan${p}banghanchen`)
         let formData = new FormData();
         formData.append('user_id', window.localStorage.id );
         formData.append('name', this.child.name);
@@ -112,7 +102,7 @@
         let config = {
           headers:{
             versions: '1',
-            tokens: tokens,
+            tokens: common.sortMd5(data),
             as: '3'
           }
         }

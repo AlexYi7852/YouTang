@@ -65,8 +65,8 @@
 </template>
 
 <script>
-  import md5 from 'blueimp-md5'
   import axios from 'axios'
+  import common from '../common'
 
   export default {
     data() {
@@ -101,28 +101,19 @@
         this.$router.push('/login');
       },
       studentInfo() {
-        if (this.checkLogin()) {
-          let that = this;
-          let ls = window.localStorage.getItem('id');
-          // md5验证
-          let studentInfo = 'id=' + ls
-          let tokens = md5('ilovewan' + studentInfo + 'banghanchen');
-          // ajax
-          let url = '/api/v1/web_studentuser_info?' + studentInfo;
-          let config = {
-            headers: {
-              versions: '1',
-              tokens: tokens,
+        let that = this;
+        let ls = window.localStorage.getItem('id');
+        // md5验证
+        let studentInfo = 'id=' + ls
+        // ajax
+        let url = '/api/v1/web_studentuser_info?' + studentInfo;
+        axios.get(url)
+          .then(function (response) {
+            that.users = response.data.data;
+            if (that.users.headimg == '') {
+              that.users.headimg = 'https://wanbangoss.oss-cn-beijing.aliyuncs.com/youtang/static/img/default-avatar.jpg';
             }
-          }
-          axios.get(url, studentInfo, config)
-            .then(function (response) {
-              that.users = response.data.data;
-              if (that.users.headimg == '') {
-                that.users.headimg = 'https://wanbangoss.oss-cn-beijing.aliyuncs.com/youtang/static/img/default-avatar.jpg';
-              }
-            })
-        }
+          })
       },
       navScroll() {
         this.navShow = true

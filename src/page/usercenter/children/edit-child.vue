@@ -64,9 +64,9 @@
 </template>
 
 <script>
-  import md5 from 'blueimp-md5'
   import axios from 'axios'
   import VueImgInputer from 'vue-img-inputer'
+  import common from '../../../components/common'
 
   export default {
     props:['msg'],
@@ -82,23 +82,13 @@
       // 更新孩子信息
       saveChildInfo() {
         let data = {
-            'id': this.msg.id,
-            'user_id': window.localStorage.id,
-            'name': this.msg.name,
-            'sex': this.msg.sex,
-            'ages': this.msg.ages,
-            'headurl': this.picValue
-          },
-          keys = Object.keys(data),
-          i, len = keys.length;
-        keys.sort();
-        let p = '';
-        for (i = 0; i < len; i++) {
-          let k = keys[i];
-          p += k+'='+data[k]+'&';
+          'id': this.msg.id,
+          'user_id': window.localStorage.id,
+          'name': this.msg.name,
+          'sex': this.msg.sex,
+          'ages': this.msg.ages,
+          'headurl': this.picValue
         }
-        p = p.substring(0,p.length-1);
-        let tokens = md5(`ilovewan${p}banghanchen`)
         let formData = new FormData();
         formData.append('id', this.msg.id);
         formData.append('user_id', window.localStorage.id);
@@ -109,7 +99,7 @@
         let config = {
           headers:{
             versions: '1',
-            tokens: tokens,
+            tokens: common.sortMd5(data),
             as: '3'
           }
         }

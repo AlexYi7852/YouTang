@@ -4,13 +4,13 @@
     <div class="select-cycle">
       <div class="title">选择周期</div>
       <div class="month-item">
-        <div class="month" :class="{ active: monthValue === index }" @click="active(index)" v-for="(month, index) in months">{{ month }}</div>
+        <div class="month" :class="{ active: monthValue === index }" @click="active(index)" v-for="(month, index) in months" :key="index">{{ month }}</div>
       </div>
     </div>
     <div class="select-time">
       <div class="title">选择上课时间</div>
       <div class="time-item">
-        <div class="background" v-for="course in courseList">
+        <div class="background" v-for="(course, index) in courseList" :key="index">
           <div class="times">
             <div class="time-main">
               <span class="week">{{ course.title_0 }}</span>

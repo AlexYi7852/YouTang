@@ -2,7 +2,7 @@
   <div class="oneByOne">
     <Cover ref="cover"></Cover>
     <ul class="course-item">
-      <li class="course-time" :class="{ 'cannot-appoint': course.status == 2 }" @click="coverShow(course.time)" v-for="course in courseTimeList">{{ course.time }}</li>
+      <li class="course-time" :class="{ 'cannot-appoint': course.status == 2 }" @click="coverShow(course.time)" v-for="(course, index) in courseTimeList" :key="index">{{ course.time }}</li>
     </ul>
   </div>
 </template>
@@ -10,7 +10,6 @@
 <script>
   import axios from 'axios'
   import jstz from 'jstz'
-  import md5 from 'blueimp-md5'
   import Hub from '../../../components/hub'
   import Cover from '../../../components/cover/index'
 

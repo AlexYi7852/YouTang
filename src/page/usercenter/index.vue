@@ -94,8 +94,8 @@ import ytHeader from '../../components/header/yt-header'
 import ytFooter from '../../components/footer/yt-footer'
 import childCreate from './children/child-create'
 import childList from './children/child-list'
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../../components/common'
 
 export default {
   components: {
@@ -144,18 +144,9 @@ export default {
 			// md5验证
 			let userid = {
 				'id': window.localStorage.getItem('id')
-			},
-			keys = Object.keys(userid),
-			i, len = keys.length;
-			keys.sort();
-			let p = '';
-			for (i = 0; i < len; i++) {
-				let k = keys[i];
-				p += k+'='+userid[k]+'&';
 			}
-			p = p.substring(0,p.length-1);
 			// ajax
-			let url = `/api/v1/web_studentuser_info?${p}`;
+			let url = `/api/v1/web_studentuser_info?${common.sort(userid)}`;
 			axios.get(url,userid).then((response) => {
 				if (response.data.errCode == 0) {
           that.userInfo = response.data.data;
@@ -199,17 +190,7 @@ export default {
         'sex': this.userInfo.sex,
         'birthday': this.moment(this.userInfo.birthday).unix(),
         'headimg': this.picValue
-			},
-			keys = Object.keys(data),
-			i, len = keys.length;
-			keys.sort();
-			let p = '';
-			for (i = 0; i < len; i++) {
-				let k = keys[i];
-				p += k+'='+data[k]+'&';
 			}
-			p = p.substring(0,p.length-1);
-			let tokens = md5(`ilovewan${p}banghanchen`);
 			// ajax
 			let url = '/api/v1/users/web_update';
       let formData = new FormData();
@@ -222,7 +203,7 @@ export default {
 			let config = {
 				headers:{
 					versions: '1',
-					tokens: tokens,
+					tokens: common.sortMd5(data),
           as: '3'
 				}
       }

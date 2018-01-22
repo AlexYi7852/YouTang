@@ -55,6 +55,10 @@ export default {
   },
   mounted(){
     this.checkLogin();
+    Hub.$on('loginLink', (status) => {
+      this.logStatus = true;
+      this.boxAnimateClass = 'box-transform-right'
+    })
   },
   methods: {
     switchStatus(item){

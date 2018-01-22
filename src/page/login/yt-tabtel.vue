@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-tel tab-list">
+  <div class="tab-tel tab-list" @keyup.enter="login">
     <div class="form-wrapper">
         <div class="account flex">
             <p class="input-title">手机号:</p>
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../../components/common'
 
 export default {
     data: function(){
@@ -66,17 +66,7 @@ export default {
                     'password': this.loginTelpwd,
                     'post_type': 'login',
                     'areacode': this.loginCountry
-                },
-                keys = Object.keys(login),
-                i, len = keys.length;
-                keys.sort();
-                let p = '';
-                for (i = 0; i < len; i++) {
-                    let k = keys[i];
-                    p += k+'='+login[k]+'&';
                 }
-                p = p.substring(0,p.length-1);
-                let tokens = md5('ilovewan' + p + 'banghanchen');
                 // ajax
                 let url = '/api/v1/phone/web_login';
                 let formData = new FormData();
@@ -87,7 +77,7 @@ export default {
                 let config = {
                     headers:{
                         versions: '1',
-                        tokens: tokens,
+                        tokens: common.sortMd5(login),
                         'content-type': 'multipart/form-data'
                     }
                 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-tel tab-list">
+  <div class="tab-tel tab-list" @keyup.enter="reg">
     <div class="form-wrapper">
         <div class="account flex">
             <p class="input-title">手机号:</p>
@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
-import jstz from 'jstz'
+import Hub from '../../components/hub'
+import common from '../../components/common'
 
 export default {
   data:function () {
@@ -45,20 +45,27 @@ export default {
       time: '发送验证码',
       isdaojishi: false,
       isDisabled: false,
-      tz: ''
+      ip: ''
     }
   },
   mounted(){
-    this.timeZone();
+    this.ip_info();
   },
   methods: {
-    timeZone(){
-        const timezone = jstz.determine();
-        timezone.name(); 
-        this.tz = timezone.name();
+    ip_info(){
+        let that = this;
+        axios.get('/api/v1/getip')
+        .then(function (response) {
+            that.ip = response.data.data;
+            let url = '/api/v1/user/ipto_info';
+            axios.post(url,that.ip)
+            .then(function (response) {
+                that.regCountry = response.data.data.phone_code;
+            })
+        })
     },
     // 验证码获取
-    daojishi :function() {
+    daojishi() {
         let that = this;
         // 验证是否为空
         if (this.regCountry == '' || this.regTel == '') {
@@ -66,12 +73,12 @@ export default {
                 message: '请输入手机号和国家码',
                 type: 'warning'
             }
-            that.alertOpen(alert.message,alert.type);
+            that.alertOpen(alert.message, alert.type);
         }else{
             // 计时器
             this.time = 60;
-            this.isDisabled=true;
-            this.isdaojishi=true;
+            this.isDisabled = true;
+            this.isdaojishi = true;
             let interval = window.setInterval(function() {
                 if ((this.time--) <= 0) {
                     this.time = '重新发送';
@@ -85,29 +92,10 @@ export default {
                 'areacode': this.regCountry,
                 'telephone': this.regTel,
                 'type': '1'
-            },
-            keys = Object.keys(sendsms),
-            i, len = keys.length;
-            keys.sort();
-            let p = '';
-            for (i = 0; i < len; i++) {
-                let k = keys[i];
-                p += k+'='+sendsms[k]+'&';
             }
-            p = p.substring(0,p.length-1);
-            let tokens = md5('ilovewan' + p + 'banghanchen');
             // ajax
-            axios.get('/api/v1/common/sendsms?'+p+'',{
-                headers: {
-                    versions: '1',
-                    tokens: tokens
-                },
-                data:{
-                    areacode: this.regCountry,
-                    telephone: this.regTel,
-                    type: '1'
-                }
-            })
+            let url = `/api/v1/common/sendsms?${common.sort(sendsms)}`
+            axios.get(url)
             .then(function (response) {
                 console.log(response.data.errMsg);
             })
@@ -121,7 +109,7 @@ export default {
         }
     },
     // 注册接入
-    reg :function(){
+    reg(){
         let that = this;
         if (this.regCountry == '' || this.regTel == '' || this.regSms == '' || this.regPwd == '') {
             let alert = {
@@ -137,18 +125,7 @@ export default {
                 'smscode': this.regSms,
                 'post_type': 'register',
                 'areacode': this.regCountry
-            },
-            keys = Object.keys(register),
-            i, len = keys.length;
-            keys.sort();
-            let p = '';
-            for (i = 0; i < len; i++) {
-                let k = keys[i];
-                p += k+'='+register[k]+'&';
             }
-            p = p.substring(0,p.length-1);
-            let tokens = md5('ilovewan' + p + 'banghanchen');
-            console.log(p,tokens);
             // ajax
             let url = '/api/v1/phone/web_register'
             let formData = new FormData();
@@ -161,18 +138,19 @@ export default {
                 headers:{
                     versions: '1',
                     as: '3',
-                    tokens: tokens,
+                    tokens: common.sortMd5(register),
                     'content-type': 'multipart/form-data'
                 }
             }
             axios.post(url,formData,config)
             .then(function (response) {
                 if (response.data.errCode == '0') {
-                    let alert = {
-                        message: '注册成功',
-                        type: 'success'
-                    }
-                    that.alertOpen(alert.message,alert.type);
+                    that.$alert('手机号已注册成功', '注册成功', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                            Hub.$emit('loginLink',true);
+                        }
+                    })
                 }else if(response.data.errCode == '30002'){
                     let alert = {
                         message: '手机号或密码格式错误，请输入正确的手机号或6-16位密码',

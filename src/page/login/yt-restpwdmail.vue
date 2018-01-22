@@ -38,6 +38,7 @@
 <script>
 import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../../components/common'
 
 export default {
     data(){
@@ -53,7 +54,7 @@ export default {
     },
     methods:{
         // 验证码获取
-        daojishi:function() {
+        daojishi() {
             let that = this;
             // 验证是否为空
             if (this.restMail == '') {
@@ -79,19 +80,9 @@ export default {
                 let sendsms = {
                     'email': this.restMail,
                     'type': '10'
-                },
-                keys = Object.keys(sendsms),
-                i, len = keys.length;
-                keys.sort();
-                let p = '';
-                for (i = 0; i < len; i++) {
-                    let k = keys[i];
-                    p += k+'='+sendsms[k]+'&';
                 }
-                p = p.substring(0,p.length-1);
-                let tokens = md5('ilovewan' + p + 'banghanchen');
                 // ajax
-                let url = `/api/v1/sms/email?${p}`;
+                let url = `/api/v1/sms/email?${common.sort(sendsms)}`;
                 axios.get(url)
                 .then(function (response) {
                     console.log(response.data.errMsg);
@@ -123,17 +114,7 @@ export default {
                             'password': this.newPwd,
                             'post_type': 'find_password',
                             'smscode': this.restSms
-                        },
-                        keys = Object.keys(login),
-                        i, len = keys.length;
-                        keys.sort();
-                        let p = '';
-                        for (i = 0; i < len; i++) {
-                            let k = keys[i];
-                            p += k+'='+login[k]+'&';
                         }
-                        p = p.substring(0,p.length-1);
-                        let tokens = md5('ilovewan' + p + 'banghanchen');
                         // ajax
                         let url = '/api/v1/users/web_found';
                         let formData = new FormData();
@@ -144,7 +125,7 @@ export default {
                         let config = {
                             headers:{
                                 versions: '1',
-                                tokens: tokens,
+                                tokens: common.sortMd5(login),
                                 'content-type': 'multipart/form-data'
                             }
                         }

@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../../components/common'
 
 export default {
   	data() {
@@ -75,23 +75,13 @@ export default {
 			// md5验证
 			let user_id = {
 				'role_id': window.localStorage.getItem('child')
-			},
-			keys = Object.keys(user_id),
-			i, len = keys.length;
-			keys.sort();
-			let p = '';
-			for (i = 0; i < len; i++) {
-				let k = keys[i];
-				p += k+'='+user_id[k]+'&';
 			}
-			p = p.substring(0,p.length-1);
-			let tokens = md5(`ilovewan${p}banghanchen`);
 			// ajax
 			let url = '/api/v1/grades/webget_grades';
 			let config = {
 				headers:{
 					versions: '1',
-					tokens: tokens,
+					tokens: common.sortMd5(user_id),
 				}
 			}
 			axios.post(url,user_id,config)
@@ -111,18 +101,9 @@ export default {
 			// md5验证
 			let info = {
 				'role_id': window.localStorage.getItem('child')
-			},
-			keys = Object.keys(info),
-			i, len = keys.length;
-			keys.sort();
-			let p = '';
-			for (i = 0; i < len; i++) {
-				let k = keys[i];
-				p += k+'='+info[k]+'&';
 			}
-			p = p.substring(0,p.length-1);
 			// ajax
-			let url = `/api/v1/webuser_ecaluation?${p}`;
+			let url = `/api/v1/webuser_ecaluation?${common.sort(info)}`;
 			axios.get(url,info)
 			.then(function (response) {
                 console.log(response);

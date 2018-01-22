@@ -1,13 +1,13 @@
 <template>
 <div class="mycourse">
     <div class="course-menu">
-        <el-menu :default-active="activeIndex" class="el-menu-demo flex" mode="horizontal" @select="handleSelect">
-            <router-link to="/study/mycourse/undone">
+        <el-menu :default-active="activeIndex" class="el-menu-demo flex" mode="horizontal">
+            <router-link :to="undoneRouterLink">
                 <el-menu-item index="1">
                     <span>未上课程</span>
                 </el-menu-item>
             </router-link>
-            <router-link to="/study/mycourse/complete">
+            <router-link :to="completeRouterLink">
                 <el-menu-item index="2">
                     <span>已上课程</span>
                 </el-menu-item>
@@ -21,32 +21,39 @@
 </template>
 
 <script>
-import Undone from './children/undone'
-import Complete from './children/complete'
 
 export default {
-  	components: {
-		'complete': Complete,
-		'undone': Undone,
-  	},
 	data() {
 		return {
+            undoneRouterLink: '',
+            completeRouterLink: '',
 			activeIndex: '1'
 		};
     },
     mounted(){
-	    this.getPath();
+        this.getPath();
+        this.changeRouterLink();
+    },
+    watch: {
+        '$route': 'changeRouterLink'
     },
 	methods: {
-	    getPath(){
-	        let path = this.$route.path
-            if(path === "/study/mycourse/complete"){
-	            this.activeIndex = '2'
+        changeRouterLink(){
+            if (this.$route.path === '/study/mycourse/undone' || this.$route.path === '/study/mycourse/complete'){
+                this.completeRouterLink = '/study/mycourse/complete'
+                this.undoneRouterLink = '/study/mycourse/undone'
+            } 
+            else{
+                this.undoneRouterLink = '/study/mycourse/readUndone'
+                this.completeRouterLink = '/study/mycourse/readComplete'
             }
         },
-        handleSelect(key, keyPath) {
-			// console.log(key, keyPath);
-		}
+	    getPath(){
+	        let path = this.$route.path
+            if(path === "/study/mycourse/complete" || path === '/study/mycourse/readComplete'){
+	            this.activeIndex = '2'
+            }
+        }
 	}
 }
 </script>

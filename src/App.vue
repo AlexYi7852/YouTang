@@ -1,8 +1,8 @@
 <template>
-    <div class="main">
-      <Enter></Enter>
-      <router-view></router-view>
-    </div>
+  <div class="main">
+    <Enter></Enter>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -13,9 +13,9 @@
 </script>
 
 <style lang="less">
-.main{
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+  .main{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 </style>

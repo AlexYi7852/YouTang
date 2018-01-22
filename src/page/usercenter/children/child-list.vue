@@ -71,10 +71,10 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
 import editChild from './edit-child'
 import appendChild from './append-child'
+import common from '../../../components/common'
 
 export default {
     components: {
@@ -106,21 +106,11 @@ export default {
 			// md5验证
 			let userid = {
 				'user_id': window.localStorage.getItem('id')
-			},
-			keys = Object.keys(userid),
-			i, len = keys.length;
-			keys.sort();
-			let p = '';
-			for (i = 0; i < len; i++) {
-				let k = keys[i];
-				p += k+'='+userid[k]+'&';
 			}
-			p = p.substring(0,p.length-1);
 			// ajax
-			let url = `/api/v1/webget_userroles?${p}`;
+			let url = `/api/v1/webget_userroles?${common.sort(userid)}`;
 			axios.get(url,userid)
 			.then(function (response) {
-                console.log(response.data.data);
 				if (response.data.errCode == 0) {
                     that.items = response.data.data;
 				}else{

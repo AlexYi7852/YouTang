@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-mail tab-list">
+  <div class="tab-mail tab-list" @keyup.enter="login">
     <div class="form-wrapper">
         <div class="account flex">
             <p class="input-title">邮箱账号:</p>
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
 import axios from 'axios'
+import common from '../../components/common'
 
 export default {
     data: function(){
@@ -34,6 +34,7 @@ export default {
     methods:{
         login:function(){
             let that = this;
+            console.log(this.loginMail,this.loginMailpwd)
             if (this.loginMail == '' || this.loginMailpwd == '') {
                 let alert = {
                     message: '请填写完整的资料',
@@ -46,17 +47,7 @@ export default {
                     'email': this.loginMail,
                     'password': this.loginMailpwd,
                     'post_type': 'login',
-                },
-                keys = Object.keys(login),
-                i, len = keys.length;
-                keys.sort();
-                let p = '';
-                for (i = 0; i < len; i++) {
-                    let k = keys[i];
-                    p += k+'='+login[k]+'&';
                 }
-                p = p.substring(0,p.length-1);
-                let tokens = md5('ilovewan' + p + 'banghanchen');
                 // ajax
                 let url = '/api/v1/users/web_login';
                 let formData = new FormData();
@@ -66,7 +57,7 @@ export default {
                 let config = {
                     headers:{
                         versions: '1',
-                        tokens: tokens,
+                        tokens: common.sortMd5(login),
                         'content-type': 'multipart/form-data'
                     }
                 }
@@ -83,7 +74,6 @@ export default {
                         window.localStorage.setItem('child',response.data.data.role_id);
                         window.localStorage.setItem('token_id',response.data.data.token_id);
                         window.location.href = '/study';
-                        console.log(window.localStorage)
                     }else if(response.data.errCode == '30005'){
                         let alert = {
                             message: '用户名或密码错误',
@@ -118,7 +108,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.form-wrapper{
+.form-wrapper{ 
     margin-top: 80px;
     .account{
         margin-top: 20px;

@@ -25,6 +25,7 @@
 <script>
   import axios from 'axios'
   import md5 from 'blueimp-md5'
+  import common from '../../components/common'
 
   import ytHeader from '../../components/header/yt-header'
   import ytFooter from '../../components/footer/yt-footer'
@@ -59,23 +60,13 @@
         // md5验证
         let info = {
             'role_id': window.localStorage.getItem('child')
-          },
-          keys = Object.keys(info),
-          i, len = keys.length;
-        keys.sort();
-        let p = '';
-        for (i = 0; i < len; i++) {
-          let k = keys[i];
-          p += k + '=' + info[k] + '&';
         }
-        p = p.substring(0, p.length - 1);
-        let tokens = md5(`ilovewan${p}banghanchen`);
         // ajax
         let url = '/api/v1/makelesson/webteststatus';
         let config = {
           headers: {
             versions: '1',
-            tokens: tokens,
+            tokens: common.sortMd5(info),
           }
         }
         axios.post(url, info, config).then((response) => {

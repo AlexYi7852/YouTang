@@ -2,7 +2,7 @@
   <div class="firstEval">
     <Cover ref="cover" :timeStamp="timeStamp"></Cover>
     <ul class="firstEval-item">
-      <li class="firstEval-courseTime" :class="{ 'cannot-appoint': course.status == 2 }" @click="coverShow(course.time)" v-for="course in courseTimeList">{{ course.time }}</li>
+      <li class="firstEval-courseTime" :class="{ 'cannot-appoint': course.status == 2 }" @click="coverShow(course.time)" v-for="(course, index) in courseTimeList" :key="index">{{ course.time }}</li>
     </ul>
   </div>
 </template>
@@ -10,7 +10,6 @@
 <script>
   import axios from 'axios'
   import jstz from 'jstz'
-  import md5 from 'blueimp-md5'
   import Cover from '../../../components/cover/index'
   import Hub from '../../../components/hub'
 
@@ -62,7 +61,6 @@
       },
       coverShow (time) {
         let ymd = this.moment.unix(this.getFirstEvalTime).format('YYYY-MM-DD')
-        console.log(ymd)
         let date = ymd + ' ' + time
         this.timeStamp = this.moment(date).unix()
         this.$refs.cover.coverShow(this.timeStamp)
