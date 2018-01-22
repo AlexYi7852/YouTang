@@ -97,7 +97,7 @@ export default {
                 this.titleMonth = month + 1;
                 if (response.data.errCode == 0) {
                     this.items = response.data.data;
-                    keys = Object.keys(this.items);
+                    let keys = Object.keys(this.items);
                     this.columnHeight(keys.length);
                 }
                 else if (response.data.errCode == 60002) {
