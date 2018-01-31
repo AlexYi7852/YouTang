@@ -20,7 +20,7 @@
         timeZone: '',  // 获取时区
         timeStamp: '', // 获取预约时间戳
         courseTimeList: '',
-        getFirstEvalTime: ''
+        getFirstEvalTime: this.moment().unix() + 86400
       }
     },
     mounted () {

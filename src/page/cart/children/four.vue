@@ -174,6 +174,7 @@ export default {
 				}
             }
             axios.post(url,info,config).then((response) => {
+                console.log(response);
                 if (response.data.errCode == 0) {
                     this.orderInfo = response.data.data;
                     this.wxpay_payment();

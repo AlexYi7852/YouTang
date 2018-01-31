@@ -51,7 +51,7 @@
             </div>
           </transition>
           <div class="main">
-            <div class="main-wrapper" v-for="main in mainList">
+            <div class="main-wrapper" v-for="(main, index) in mainList" :key="index">
               <img :src="main.img" class="img" :style="main.style"><br>
               <span class="text">{{ main.text }}</span>
             </div>
@@ -99,7 +99,7 @@
       <section class="animate">
         <div class="teacher-wrapper">
           <div class="teacher-item">
-            <ul v-for="(teacher, index) in teacherList">
+            <ul v-for="(teacher, index) in teacherList" :key="index">
               <li>
                 <div :style="teacher.styleLeaveObject" v-show="!teacher.isEnter" class="teacher-default" @mouseenter="enter(index)">
                   <div class="teacher-img" :style="teacher.styleImgObject"></div>
@@ -229,22 +229,10 @@
         return this.options.length
       }
     },
-    watch: {
-      'teacherList' () {
-        this.$nextTick(() => {
-          this.enter()
-          this.leave()
-          this.enterNav()
-          this.leaveNav()
-        })
-      }
-    },
+
     methods: {
       enterNav () {
         this.navShow = true
-      },
-      leaveNav () {
-        this.navShow = false
       },
       enter (index) {
         this.teacherList[index].isEnter = true

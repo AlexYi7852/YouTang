@@ -123,7 +123,6 @@ export default {
         // 切换课程弹窗
         getDialogInfo(index) {
             this.dataIndex=index;
-            this.animated = "animate";
         },
         // 点击消失
         showHide(){

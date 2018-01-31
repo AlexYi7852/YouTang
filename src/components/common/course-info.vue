@@ -109,7 +109,7 @@ export default {
         // 跳转上课地址
 		tolink(lesson,type){
 			let that=this;
-			let ls = window.localStorage.getItem('id');
+			let ls = window.localStorage.getItem('child');
 			if (type == 3) {
 				type = 1;
 			}else{

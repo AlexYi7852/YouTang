@@ -10,9 +10,10 @@
     </div>
     <div class="days">
       <div class="week" v-for="week in weeks" :key="week.index">{{ week }}</div>
-      <div :class="{ 'today': n === nowDay + day && nowMonth === new Date().getMonth() + 1 && nowYear === new Date().getFullYear(),
-            'absent-course': keys.indexOf(n - day) !== -1}" @click="getCourseInfo(n - day)"
-           class="day" v-if="n <= dayNum + day" v-for="n in 45" :key="n">{{ n <= day ? '' : n - day }}</div>
+      <div class="day" @click="getCourseInfo(n - day)" v-if="n <= dayNum + day" v-for="n in 45" :key="n"
+            :class="{ 'today': n === nowDay + day && nowMonth === new Date().getMonth() + 1 && nowYear === new Date().getFullYear(),
+            'absent-course': keys.indexOf(n - day) !== -1 && nowMonth === new Date().getMonth() + 1, 
+            'disabled': keys.indexOf(n - day) == -1 || nowMonth !== new Date().getMonth() + 1 }  ">{{ n <= day ? '' : n - day }}</div>
       <courseInfo :item="courseInfo" ref="courseInfo"></courseInfo>
     </div>
     <div class="class-time">
@@ -117,6 +118,8 @@ export default {
       this.getMonthDayNum(this.nowYear, this.nowMonth);
     },
     getCourseInfo(day) {
+      if (day < 10){ day = '0' + day }
+      if (this.absentCourseList[day] == 'undefined') { return }
       this.$refs.courseInfo.isShow();
       this.courseInfo = this.absentCourseList[day][1];
     },
@@ -212,6 +215,10 @@ export default {
       color: 3d 3533;
       font-size: 20px;
       text-align: center;
+    }
+
+    .disabled{
+      pointer-events: none;
     }
 
     .today {

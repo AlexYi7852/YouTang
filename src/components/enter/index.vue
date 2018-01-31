@@ -25,10 +25,6 @@
     },
     methods: {
       getOutLesson() {
-        if (this.$route.path === '/study/mycourse/undone') {
-          this.isShow = false
-          return
-        }
         let data = {
           'user_id': window.localStorage.id,
           'role_id': window.localStorage.child,

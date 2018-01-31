@@ -97,7 +97,7 @@ export default {
             let url = `/api/v1/common/sendsms?${common.sort(sendsms)}`
             axios.get(url)
             .then(function (response) {
-                
+                console.log(response.data.errMsg);
             })
             .catch(function (error) {
                 let alert = {

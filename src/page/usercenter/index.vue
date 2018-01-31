@@ -210,9 +210,7 @@ export default {
 			axios.post(url,formData,config)
 			.then(function (response) {
 				if (response.data.errCode == 0) {
-          that.$alert('保存成功！', {
-						confirmButtonText: '确定',
-					})
+          console.log('保存成功！');
           that.disabled = true;
           that.getUserInfo();
 				}else{

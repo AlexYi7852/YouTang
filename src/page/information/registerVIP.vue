@@ -12,7 +12,7 @@
           <div class="name">
             <div class="input">
               <input type="text" placeholder="用户名" size="50">
-              <div class="text">用户只能把汉子、字母、数字、下划线，不能以下划线开头</div>
+              <div class="text">用户只能把汉字、字母、数字、下划线，不能以下划线开头</div>
             </div>
             <div class="input">
               <input type="text" placeholder="密码" size="50">

@@ -34,6 +34,7 @@ export default {
     methods:{
         login:function(){
             let that = this;
+            console.log(this.loginMail,this.loginMailpwd)
             if (this.loginMail == '' || this.loginMailpwd == '') {
                 let alert = {
                     message: '请填写完整的资料',
@@ -63,6 +64,7 @@ export default {
                 axios.post(url,formData,config)
                 .then(function (response) {
                     if (response.data.errCode == '0') {
+                        console.log(response.data.data)
                         let alert = {
                             message: '登录成功',
                             type: 'success'

@@ -94,6 +94,11 @@ export default {
     mounted(){
         this.getChildList();
     },
+    watch:{
+        show: function () {
+            console.log(1);
+        }
+    },
     methods:{
         // 获取孩子列表
         getChildList(){

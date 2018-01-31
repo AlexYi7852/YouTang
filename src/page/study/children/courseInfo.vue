@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       coverShow: false,
-      cs: ''
+      cs: ""
     };
   },
   watch: {
@@ -70,26 +70,33 @@ export default {
     routerShow() {
       if (this.$route.path === "/study/mycourse/complete") {
         return false;
-      } 
-      else {
+      } else {
         return true;
       }
     },
-    classroomStatus(item){
-			const newDate = new Date();
-			let text='';
-			let date = parseInt(item+'000');
-            let startClass = date - 600000;
-			if (Number(newDate) < startClass) {
-				this.cs = true;
-				text = '等待开课'
-			}else{
-				this.cs = false;
-				text = '进入教室'
-			}
-            return text;
-        },
-    
+    // 判断路由状态
+    routerShow() {
+      if (this.$route.path === "/study/mycourse/complete" || this.$route.path === "/study/mycourse/readComplete") {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    classroomStatus(item) {
+      const newDate = new Date();
+      let text = "";
+      let date = parseInt(item + "000");
+      let startClass = date - 600000;
+      if (Number(newDate) < startClass) {
+        this.cs = true;
+        text = "等待开课";
+      } else {
+        this.cs = false;
+        text = "进入教室";
+      }
+      return text;
+    },
+
     isShow() {
       this.coverShow = true;
     },

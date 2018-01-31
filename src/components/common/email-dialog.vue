@@ -68,6 +68,7 @@ export default {
             formData.append('email', this.dialogEmailText);
             axios.post(url,formData,config)
             .then(function (response) {
+                console.log(response);
                 if (response.data.errCode == '0') {
                     that.changeEmail(false,that.dialogEmailText);
                 }else {

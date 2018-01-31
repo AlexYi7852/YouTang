@@ -46,7 +46,7 @@
       getCourseTimeList(tz){  // 获取  一对一/首次测评 预约时间列表
         let time_zone = `time_zone=${tz}`;
         let timeStamp = `time=${this.timeStamp}`
-        let url = `/api/v2/onebyone/gettimelistweb?${timeStamp}${time_zone}`;
+        let url = `/api/v2/onebyone/gettimelistweb?${timeStamp}&${time_zone}`;
         axios.get(url).then((response) => {
           if (response.data.errCode === 0) {
             this.courseTimeList = response.data.data

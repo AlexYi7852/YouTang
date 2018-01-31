@@ -105,6 +105,7 @@
         }
         let url = '/api/v1/webupdate_userrole'
         axios.post(url, formData, config).then((response) => {
+          console.log(response)
           if (response.data.errCode === 0) {
             this.$alert(response.data.errMsg,{
                 confirmButtonText: '确定',
